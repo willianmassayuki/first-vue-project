@@ -8,23 +8,20 @@
   </div>
 
   <h2>Getting props from children components</h2>
-  <div>
-    <p>{{ count }}</p>
-    <MyButton @update="decrementCount" title="-1" />
-    <MyButton @update="incrementCount" title="+1" />
-    <MyButton @update="clear" title="Zerar" />
-  </div>
+  <p>{{ count }}</p>
+
+  <CounterButtons @change-count="handleCountChange" />
 </template>
 
 <script>
+import CounterButtons from "./components/CounterButtons.vue";
 import MyBox from "./components/MyBox.vue";
-import MyButton from "./components/MyButton.vue";
 
 export default {
   name: "App",
   components: {
     MyBox,
-    MyButton,
+    CounterButtons,
   },
 
   data() {
@@ -34,14 +31,18 @@ export default {
   },
 
   methods: {
-    incrementCount() {
-      this.count++;
-    },
-    decrementCount() {
-      this.count--;
-    },
-    clear() {
-      this.count = 0;
+    handleCountChange(action, value = 1) {
+      switch (action) {
+        case "increment":
+          this.count += value;
+          break;
+        case "decrement":
+          this.count -= value;
+          break;
+        case "reset":
+          this.count = 0;
+          break;
+      }
     },
   },
 };
