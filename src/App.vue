@@ -1,17 +1,20 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container-box">
+    <MyBox text="1" />
+    <MyBox text="2" />
+    <MyBox text="3" />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import MyBox from "./components/MyBox.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    MyBox,
+  },
+};
 </script>
 
 <style>
@@ -22,5 +25,10 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.container-box {
+  display: flex;
+  gap: 8px;
 }
 </style>
