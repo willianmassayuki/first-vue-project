@@ -7,8 +7,8 @@
     <MyBox text="3" />
   </div>
 
-  <h2>Getting props from children components</h2>
-  <p>{{ count }}</p>
+  <h2>Learning how to use computed</h2>
+  <p :style="{ color: changeColorCount }">{{ count }}</p>
 
   <CounterButtons @change-count="handleCountChange" />
 </template>
@@ -43,6 +43,18 @@ export default {
           this.count = 0;
           break;
       }
+    },
+  },
+
+  computed: {
+    changeColorCount() {
+      if (this.count === 0) {
+        return "black";
+      } else if (this.count > 0) {
+        return "green";
+      }
+
+      return "red";
     },
   },
 };
