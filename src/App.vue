@@ -1,28 +1,15 @@
 <template>
-  <h1>Basics</h1>
-  <h2>Passing props to children components</h2>
-  <div class="container-box">
-    <MyBox text="1" />
-    <MyBox text="2" />
-    <MyBox text="3" />
-  </div>
-
-  <h2>Learning how to use computed</h2>
-  <p :style="{ color: changeColorCount }">{{ count }}</p>
-
-  <CounterButtons @change-count="handleCountChange" :count-value="count" />
-  <p :style="{ color: changeColorCount }">{{ countState }}</p>
+  <h1>Lista de tarefas</h1>
+  <TaskList />
 </template>
 
 <script>
-import CounterButtons from "./components/CounterButtons.vue";
-import MyBox from "./components/MyBox.vue";
+import TaskList from "./components/TaskList.vue";
 
 export default {
   name: "App",
   components: {
-    MyBox,
-    CounterButtons,
+    TaskList,
   },
 
   data() {
