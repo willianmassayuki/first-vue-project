@@ -72,13 +72,6 @@
           {{ completedTasks.length }} concluídas!
         </p>
       </div>
-
-      <div class="watch-output">
-        <h3 v-once>Saída do Watch ( Console )</h3>
-        <div class="log-container">
-          {{ watchLogs }}
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -92,12 +85,7 @@ export default {
 
   data() {
     return {
-      tasks: [
-        { id: 1234, title: "Tarefa exemplo 1", done: false },
-        { id: 1235, title: "Tarefa exemplo 2", done: false },
-      ],
-
-      watchLogs: [],
+      tasks: [],
 
       newTaskTitle: "",
 
@@ -112,6 +100,14 @@ export default {
 
   created() {
     console.log("created chamado!");
+    const savedTasks = localStorage.getItem("taskList");
+    if (savedTasks) {
+      try {
+        this.tasks = JSON.parse(savedTasks);
+      } catch (e) {
+        console.log("Erro ao carregar tarefas do LocalStorage", e);
+      }
+    }
     console.log("this.tasks agora existe: ", this.tasks);
   },
 
@@ -141,9 +137,7 @@ export default {
         task.done = !task.done;
       }
     },
-    logWatch(message) {
-      this.watchLogs.unshift(`[${new Date().toLocaleDateString()}] ${message}`);
-    },
+
     addTask() {
       if (this.newTaskTitle.trim() === "") return;
 
@@ -179,24 +173,15 @@ export default {
 
   watch: {
     tasks: {
-      handler(newValue, oldValue) {
-        const message = `Lista de tasks mudou! Itens: ${newValue.length}`;
-        this.logWatch(message);
-        if (oldValue) {
-          const modified = newValue.filter((n) => {
-            const oldTask = oldValue.find((o) => o.id === n.id);
-            return oldTask && JSON.stringify(n) !== JSON.stringify(oldTask);
-          });
-          if (modified.length > 0) {
-            const modifyMsg = `Tarefas modificadas: ${modified
-              .map((t) => t.id)
-              .join(", ")}`;
-            this.logWatch(modifyMsg);
-          }
+      handler(newVal) {
+        try {
+          localStorage.setItem("taskList", JSON.stringify(newVal));
+        } catch (e) {
+          console.log("Erro ao salvar tarefas no LocalStorage", e);
         }
       },
       deep: true,
-      immediate: true,
+      immediate: false,
     },
   },
 };
