@@ -2,8 +2,12 @@
   <div class="task-item">
     <span class="task-id"># {{ task?.id }}</span>
     <span class="task-status">{{ textStatus }}</span>
-    <button class="btn-toggle">{{ btnToggleText }}</button>
-    <button class="btn-remove">Remover</button>
+
+    <button class="btn-toggle" @click="toggleDone">
+      {{ btnToggleText }}
+    </button>
+
+    <button class="btn-remove" @click="removeTask">Remover</button>
   </div>
 </template>
 
@@ -14,6 +18,15 @@ export default {
     task: {
       type: Object,
       required: true,
+    },
+  },
+  methods: {
+    toggleDone() {
+      this.$emit("toggle-done", this.task.id);
+    },
+
+    removeTask() {
+      this.$emit("remove-task", this.task.id);
     },
   },
   computed: {

@@ -11,12 +11,20 @@
     <div tasks-container>
       <div class="pending-tasks">
         <h3>Tarefas Pendentes</h3>
-        <TaskItem :task="{ id: 1234, done: false }" />
+        <TaskItem
+          :task="tasks[0]"
+          @toggle-done="toggleTaskDone"
+          @remove-task="removeTask"
+        />
       </div>
 
       <div class="completed-tasks">
         <h3>Tarefas Concluídas</h3>
-        <TaskItem :task="{ id: 1235, done: false }" />
+        <TaskItem
+          :task="tasks[1]"
+          @toggle-done="toggleTaskDone"
+          @remove-task="removeTask"
+        />
       </div>
 
       <div>Aqui virá o componente dos contadores</div>
@@ -29,7 +37,29 @@ import TaskItem from "./TaskItem.vue";
 
 export default {
   name: "TaskList",
+
   components: { TaskItem },
+
+  data() {
+    return {
+      tasks: [
+        { id: 1234, done: false },
+        { id: 1235, done: false },
+      ],
+    };
+  },
+
+  methods: {
+    removeTask(taskId) {
+      this.tasks = this.tasks.filter((task) => task.id != taskId);
+    },
+    toggleTaskDone(taskId) {
+      const task = this.tasks.find((t) => t.id === taskId);
+      if (task) {
+        task.done = !task.done;
+      }
+    },
+  },
 };
 </script>
 
