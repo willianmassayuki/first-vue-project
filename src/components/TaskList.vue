@@ -1,6 +1,6 @@
 <template>
   <div class="task-list-container">
-    <h2>Lista de Tarefas</h2>
+    <h2 v-once>Lista de Tarefas</h2>
 
     <div class="controls">
       <button class="btn-add" @click="handleShowForm" :class="btnAddClass">
@@ -22,7 +22,7 @@
 
     <div tasks-container>
       <div class="pending-tasks">
-        <h3>Tarefas Pendentes</h3>
+        <h3 v-once>Tarefas Pendentes</h3>
 
         <p v-if="pendingTasks.length === 0">
           Nenhuma tarefa pendente no momento
@@ -31,6 +31,7 @@
         <div v-else>
           <TaskItem
             v-for="task in pendingTasks"
+            v-memo="[task.done, task.title]"
             :key="task.id"
             :task="task"
             @toggle-done="toggleTaskDone"
@@ -40,13 +41,14 @@
       </div>
 
       <div class="completed-tasks">
-        <h3>Tarefas Concluídas</h3>
+        <h3 v-once>Tarefas Concluídas</h3>
 
         <p v-if="completedTasks.length === 0">Não há tarefas concluídas</p>
 
         <div v-else>
           <TaskItem
             v-for="task in completedTasks"
+            v-memo="[task.done, task.title]"
             :key="task.id"
             :task="task"
             @toggle-done="toggleTaskDone"
@@ -56,7 +58,7 @@
       </div>
 
       <div>
-        <h3>Resumo</h3>
+        <h3 v-once>Resumo</h3>
         <p v-if="tasks?.length === 0">Você ainda não possui tarefas</p>
         <p v-else-if="pendingTasks?.length > 0 && completedTasks?.length === 0">
           Você tem {{ pendingTasks.length }} tarefas pendentes
@@ -72,7 +74,7 @@
       </div>
 
       <div class="watch-output">
-        <h3>Saída do Watch ( Console )</h3>
+        <h3 v-once>Saída do Watch ( Console )</h3>
         <div class="log-container">
           {{ watchLogs }}
         </div>
