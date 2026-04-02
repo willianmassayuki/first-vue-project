@@ -10,7 +10,8 @@
   <h2>Learning how to use computed</h2>
   <p :style="{ color: changeColorCount }">{{ count }}</p>
 
-  <CounterButtons @change-count="handleCountChange" />
+  <CounterButtons @change-count="handleCountChange" :count-value="count" />
+  <p :style="{ color: changeColorCount }">{{ countState }}</p>
 </template>
 
 <script>
@@ -55,6 +56,11 @@ export default {
       }
 
       return "red";
+    },
+    countState() {
+      if (this.count === 0) return "É zero";
+      if (this.count < 0) return "É negativo";
+      return "É positivo";
     },
   },
 };
