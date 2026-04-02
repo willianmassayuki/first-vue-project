@@ -27,7 +27,7 @@ export default {
 
   data() {
     return {
-      count: 0,
+      count: Number(localStorage.getItem("count")) || 0,
     };
   },
 
@@ -61,6 +61,14 @@ export default {
       if (this.count === 0) return "É zero";
       if (this.count < 0) return "É negativo";
       return "É positivo";
+    },
+  },
+
+  watch: {
+    count(newValue, oldValue) {
+      console.log("newValue", newValue);
+      console.log("oldValue", oldValue);
+      localStorage.setItem("count", newValue);
     },
   },
 };
