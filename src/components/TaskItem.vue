@@ -1,13 +1,31 @@
 <template>
   <div class="task-item">
-    <span class="task-id"># 123</span>
-    <span class="task-status">Concluída</span>
-    <button class="btn-toggle">Concluir</button>
+    <span class="task-id"># {{ task?.id }}</span>
+    <span class="task-status">{{ textStatus }}</span>
+    <button class="btn-toggle">{{ btnToggleText }}</button>
     <button class="btn-remove">Remover</button>
   </div>
 </template>
 
-<script></script>
+<script>
+export default {
+  name: "TaskItem",
+  props: {
+    task: {
+      type: Object,
+      required: true,
+    },
+  },
+  computed: {
+    textStatus() {
+      return this.task?.done ? "Concluída" : "Pendente";
+    },
+    btnToggleText() {
+      return this.task?.done ? "Desfazer" : "Concluir";
+    },
+  },
+};
+</script>
 
 <style>
 .task-item {

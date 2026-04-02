@@ -11,12 +11,12 @@
     <div tasks-container>
       <div class="pending-tasks">
         <h3>Tarefas Pendentes</h3>
-        <TaskItem />
+        <TaskItem :task="{ id: 1234, done: false }" />
       </div>
 
       <div class="completed-tasks">
         <h3>Tarefas Concluídas</h3>
-        <TaskItem />
+        <TaskItem :task="{ id: 1235, done: false }" />
       </div>
 
       <div>Aqui virá o componente dos contadores</div>
