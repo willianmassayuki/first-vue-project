@@ -11,8 +11,11 @@
     <div tasks-container>
       <div class="pending-tasks">
         <h3>Tarefas Pendentes</h3>
+
         <TaskItem
-          :task="tasks[0]"
+          v-for="task in pendingTasks"
+          :key="task.id"
+          :task="task"
           @toggle-done="toggleTaskDone"
           @remove-task="removeTask"
         />
@@ -20,8 +23,11 @@
 
       <div class="completed-tasks">
         <h3>Tarefas Concluídas</h3>
+
         <TaskItem
-          :task="tasks[1]"
+          v-for="task in completedTasks"
+          :key="task.id"
+          :task="task"
           @toggle-done="toggleTaskDone"
           @remove-task="removeTask"
         />
@@ -70,6 +76,15 @@ export default {
     },
     logWatch(message) {
       this.watchLogs.unshift(`[${new Date().toLocaleDateString()}] ${message}`);
+    },
+  },
+
+  computed: {
+    completedTasks() {
+      return this.tasks.filter((task) => task.done);
+    },
+    pendingTasks() {
+      return this.tasks.filter((task) => !task.done);
     },
   },
 
