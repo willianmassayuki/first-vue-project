@@ -3,37 +3,73 @@
     <h2>Lista de Tarefas</h2>
 
     <div class="controls">
-      <button class="btn-add">Adicionar nova tarefa</button>
+      <button class="btn-add" @click="handleShowForm" :class="btnAddClass">
+        {{ btnAddText }}
+      </button>
       <button class="btn-toggle-all">Marcar todas</button>
       <button class="btn-clear">Limpar concluídas</button>
+    </div>
+
+    <div v-if="showForm" class="add-task-container">
+      <input
+        v-model="newTaskTitle"
+        type="text"
+        placeholder="Digite o título da tarefa"
+        class="task-input"
+      />
+      <button class="btn-add" @click="addTask">Adicionar</button>
     </div>
 
     <div tasks-container>
       <div class="pending-tasks">
         <h3>Tarefas Pendentes</h3>
 
-        <TaskItem
-          v-for="task in pendingTasks"
-          :key="task.id"
-          :task="task"
-          @toggle-done="toggleTaskDone"
-          @remove-task="removeTask"
-        />
+        <p v-if="pendingTasks.length === 0">
+          Nenhuma tarefa pendente no momento
+        </p>
+
+        <div v-else>
+          <TaskItem
+            v-for="task in pendingTasks"
+            :key="task.id"
+            :task="task"
+            @toggle-done="toggleTaskDone"
+            @remove-task="removeTask"
+          />
+        </div>
       </div>
 
       <div class="completed-tasks">
         <h3>Tarefas Concluídas</h3>
 
-        <TaskItem
-          v-for="task in completedTasks"
-          :key="task.id"
-          :task="task"
-          @toggle-done="toggleTaskDone"
-          @remove-task="removeTask"
-        />
+        <p v-if="completedTasks.length === 0">Não há tarefas concluídas</p>
+
+        <div v-else>
+          <TaskItem
+            v-for="task in completedTasks"
+            :key="task.id"
+            :task="task"
+            @toggle-done="toggleTaskDone"
+            @remove-task="removeTask"
+          />
+        </div>
       </div>
 
-      <div>Aqui virá o componente dos contadores</div>
+      <div>
+        <h3>Resumo</h3>
+        <p v-if="tasks?.length === 0">Você ainda não possui tarefas</p>
+        <p v-else-if="pendingTasks?.length > 0 && completedTasks?.length === 0">
+          Você tem {{ pendingTasks.length }} tarefas pendentes
+        </p>
+
+        <p v-else-if="completedTasks?.length > 0 && pendingTasks?.length === 0">
+          Todas as tarefas foram concluídas!
+        </p>
+        <p v-else>
+          Você tem {{ pendingTasks.length }} pendente(s) e
+          {{ completedTasks.length }} concluídas!
+        </p>
+      </div>
 
       <div class="watch-output">
         <h3>Saída do Watch ( Console )</h3>
@@ -56,11 +92,15 @@ export default {
   data() {
     return {
       tasks: [
-        { id: 1234, done: false },
-        { id: 1235, done: false },
+        { id: 1234, title: "Tarefa exemplo 1", done: false },
+        { id: 1235, title: "Tarefa exemplo 1", done: false },
       ],
 
       watchLogs: [],
+
+      newTaskTitle: "",
+
+      showForm: false,
     };
   },
 
@@ -77,6 +117,22 @@ export default {
     logWatch(message) {
       this.watchLogs.unshift(`[${new Date().toLocaleDateString()}] ${message}`);
     },
+    addTask() {
+      if (this.newTaskTitle.trim() === "") return;
+
+      this.tasks.push({
+        id: Date.now(),
+        title: this.newTaskTitle.trim(),
+        done: false,
+      });
+
+      this.newTaskTitle = "";
+      this.showForm = false;
+    },
+
+    handleShowForm() {
+      this.showForm = !this.showForm;
+    },
   },
 
   computed: {
@@ -85,6 +141,12 @@ export default {
     },
     pendingTasks() {
       return this.tasks.filter((task) => !task.done);
+    },
+    btnAddText() {
+      return this.showForm ? "Fechar" : "Adicionar Nova Tarefa";
+    },
+    btnAddClass() {
+      return this.showForm ? "btn-clear" : "btn-add";
     },
   },
 
@@ -187,6 +249,7 @@ button {
 .completed-tasks {
   padding: 20px;
   border-radius: 8px;
+  margin-bottom: 32px;
 
   h3 {
     margin-top: 0;
@@ -221,5 +284,19 @@ button {
   border-radius: 4px;
   margin-top: 10px;
   font-family: monospace;
+}
+
+.add-task-container {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.task-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 300px;
 }
 </style>
