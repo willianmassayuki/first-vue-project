@@ -66,9 +66,12 @@ export default {
 
   watch: {
     count(newValue, oldValue) {
-      console.log("newValue", newValue);
-      console.log("oldValue", oldValue);
+      console.log("count newValue", newValue);
+      console.log("count oldValue", oldValue);
       localStorage.setItem("count", newValue);
+    },
+    changeColorCount(newValue) {
+      console.log("changeColorCount newValue", newValue);
     },
   },
 };
