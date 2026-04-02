@@ -88,7 +88,6 @@ import TaskItem from "./TaskItem.vue";
 
 export default {
   name: "TaskList",
-
   components: { TaskItem },
 
   data() {
@@ -104,6 +103,24 @@ export default {
 
       showForm: false,
     };
+  },
+
+  beforeCreate() {
+    console.log("beforeCreate chamado!");
+    console.log("this.tasks ainda é: ", this.tasks);
+  },
+
+  created() {
+    console.log("created chamado!");
+    console.log("this.tasks agora existe: ", this.tasks);
+  },
+
+  beforeMount() {
+    console.log("beforeMount chamado!");
+  },
+
+  mounted() {
+    console.log("mounted chamado!");
   },
 
   methods: {
