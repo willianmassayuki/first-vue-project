@@ -28,6 +28,13 @@
       </div>
 
       <div>Aqui virá o componente dos contadores</div>
+
+      <div class="watch-output">
+        <h3>Saída do Watch ( Console )</h3>
+        <div class="log-container">
+          {{ watchLogs }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -46,6 +53,8 @@ export default {
         { id: 1234, done: false },
         { id: 1235, done: false },
       ],
+
+      watchLogs: [],
     };
   },
 
@@ -58,6 +67,31 @@ export default {
       if (task) {
         task.done = !task.done;
       }
+    },
+    logWatch(message) {
+      this.watchLogs.unshift(`[${new Date().toLocaleDateString()}] ${message}`);
+    },
+  },
+
+  watch: {
+    tasks: {
+      handler(newValue, oldValue) {
+        const message = `Lista de tasks mudou! Itens: ${newValue.length}`;
+        this.logWatch(message);
+        if (oldValue) {
+          const modified = newValue.filter((n) => {
+            const oldTask = oldValue.find((o) => o.id === n.id);
+            return oldTask && JSON.stringify(n) !== JSON.stringify(oldTask);
+          });
+          if (modified.length > 0) {
+            const modifyMsg = `Tarefas modificadas: ${modified
+              .map((t) => t.id)
+              .join(", ")}`;
+            this.logWatch(modifyMsg);
+          }
+        }
+      },
+      deep: true,
     },
   },
 };
@@ -154,5 +188,22 @@ button {
 .completed-tasks {
   background-color: #f0fff0;
   border: 2px solid #d4edda;
+}
+
+.watch-output {
+  background-color: #2c3e50;
+  color: white;
+  padding: 15px;
+  border-radius: 6px;
+}
+
+.log-container {
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #1a252f;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+  font-family: monospace;
 }
 </style>
