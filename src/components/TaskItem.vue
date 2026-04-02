@@ -20,6 +20,23 @@ export default {
       required: true,
     },
   },
+
+  beforeMount() {
+    console.log("TaskItem será montado!");
+  },
+
+  mounted() {
+    console.log("TaskItem: " + this.task.title + " foi montado!");
+  },
+
+  beforeUnmount() {
+    console.log("TaskItem: " + this.task.title + " será desmontado!");
+  },
+
+  unmounted() {
+    console.log("TaskItem: " + this.task.title + " foi desmontado!");
+  },
+
   methods: {
     toggleDone() {
       this.$emit("toggle-done", this.task.id);

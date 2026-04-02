@@ -94,7 +94,7 @@ export default {
     return {
       tasks: [
         { id: 1234, title: "Tarefa exemplo 1", done: false },
-        { id: 1235, title: "Tarefa exemplo 1", done: false },
+        { id: 1235, title: "Tarefa exemplo 2", done: false },
       ],
 
       watchLogs: [],
@@ -124,11 +124,11 @@ export default {
   },
 
   beforeUpdate() {
-    console.log("Antes de atualizar a árvore de componentes.");
+    console.log("TaskList -> beforeUpdate");
   },
 
   updated() {
-    console.log("Após a atualização");
+    console.log("TaskList -> updated");
   },
 
   methods: {
